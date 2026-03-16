@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Push Up",
+    "difficulty": "BEGINNER",
+    "muscleGroups": ["CHEST", "SHOULDERS", "ARMS", "CORE"],
+    "equipmentNeeded": ["BODYWEIGHT"]
+  },
+  {
+    "name": "Dumbbell Bench Press",
+    "difficulty": "INTERMEDIATE",
+    "muscleGroups": ["CHEST", "SHOULDERS", "ARMS"],
+    "equipmentNeeded": ["DUMBBELL", "MACHINE"]
+  }
+]

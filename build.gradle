@@ -17,6 +17,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'com.itextpdf:itextpdf:5.5.13.3'
 
     testImplementation(platform("org.junit:junit-bom:6.0.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")

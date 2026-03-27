@@ -9,6 +9,18 @@ public class UserProfile {
     private Goal goal;
     private Constraint constraint;
 
+    public Goal getGoal() {
+        return goal;
+    }
+
+    public Constraint getConstraint() {
+        return constraint;
+    }
+
+    public double getWeightKg() {
+        return weightKg;
+    }
+
     public UserProfile(double weightKg, int avgCaloriesPerDay, int avgStepsPerDay, int trainingFrequencyPerWeek, Sex sex, Goal goal, Constraint constraint) {
         this.weightKg = weightKg;
         this.avgCaloriesPerDay = avgCaloriesPerDay;

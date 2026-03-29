@@ -1,5 +1,6 @@
 package nl.vu.cs.softwaredesign.services.analytics;
 
+import nl.vu.cs.softwaredesign.domain.core.GoalType;
 import nl.vu.cs.softwaredesign.domain.core.UserProfile;
 import nl.vu.cs.softwaredesign.domain.tracking.WeightForecastResult;
 import nl.vu.cs.softwaredesign.domain.core.Sex;
@@ -18,8 +19,6 @@ public class WeightPredictor {
         for (int i = 1; i <= weeks; i++) {
             // 1. Calculate Base TDEE
             double bmr = currentWeight * 24.0;
-
-            // THE UPGRADE: Adjust BMR based on biological sex
             if (user.getSex() == Sex.FEMALE) {
                 bmr *= 0.9;
             } else if (user.getSex() == Sex.MALE) {
@@ -30,8 +29,16 @@ public class WeightPredictor {
             double workoutCalories = (user.getTrainingFrequencyPerWeek() * 400.0) / 7.0;
             double tdee = bmr + stepCalories + workoutCalories;
 
-            // 2. Calculate deficit or surplus
-            double dailyDifference = user.getAvgCaloriesPerDay() - tdee;
+            // Override user's CLI input with a mathematically correct diet plan based on their goal!
+            double dailyDifference;
+            if (user.getGoal().getGoalType() == GoalType.WEIGHT_LOSS) {
+                dailyDifference = -500.0; // Force a healthy 500 calorie deficit for weight loss
+            } else if (user.getGoal().getGoalType() == GoalType.STRENGTH) {
+                dailyDifference = 300.0; // Force a slight surplus to build muscle
+            } else {
+                dailyDifference = user.getAvgCaloriesPerDay() - tdee; // Use what they entered
+            }
+
             double weeklyDifference = dailyDifference * 7.0;
 
             // 3. Convert calories to kg

@@ -1,5 +1,7 @@
 package nl.vu.cs.softwaredesign.planning;
 
+import nl.vu.cs.softwaredesign.domain.core.Constraint;
+import nl.vu.cs.softwaredesign.domain.core.Goal;
 import nl.vu.cs.softwaredesign.domain.core.UserProfile;
 import nl.vu.cs.softwaredesign.domain.exercise.Exercise;
 import nl.vu.cs.softwaredesign.domain.plan.*;
@@ -9,30 +11,25 @@ import java.util.List;
 
 public class WeightLossStrategy implements RecommendationStrategy {
     @Override
-    public TrainingPlan generatePlan(UserProfile user, List<Exercise> availableExercises) {
+    public TrainingPlan generatePlan(UserProfile user, Goal goal, Constraint constraint, List<Exercise> exercises) {
         TrainingPlan plan = new TrainingPlan();
+        DayOfWeek[] allDays = DayOfWeek.values();
 
-        List<PlannedExercise> workoutA = new ArrayList<>();
-        List<PlannedExercise> workoutB = new ArrayList<>();
+        for (int w = 1; w <= goal.getTargetWeeks(); w++) {
+            WeekPlan weekPlan = new WeekPlan(w);
 
-        // Distribute exercises alternately to create two distinct workouts
-        for (int i = 0; i < availableExercises.size(); i++) {
-            Exercise ex = availableExercises.get(i);
-            if (i % 2 == 0) {
-                // Workout A: Higher reps, lower sets for cardio effect
-                workoutA.add(new PlannedExercise(ex, 3, 15));
-            } else {
-                // Workout B: Slightly heavier, more sets
-                workoutB.add(new PlannedExercise(ex, 4, 12));
+            int daysToTrain = constraint.getDaysAvailablePerWeek();
+            for (int d = 0; d < daysToTrain && d < allDays.length; d++) {
+                List<PlannedExercise> dailyWorkout = new ArrayList<>();
+
+                // Add exercises (3 sets, 15 reps, 60 seconds rest)
+                for (int i = 0; i < exercises.size(); i++) {
+                    dailyWorkout.add(new PlannedExercise(exercises.get(i), 3, 15, 60));
+                }
+
+                weekPlan.addDay(new DayOfTraining(allDays[d], dailyWorkout));
             }
-        }
-
-        // Only schedule the days if exercises actually exist for them
-        if (!workoutA.isEmpty()) {
-            plan.addDay(new DayOfTraining(DayOfWeek.MONDAY, workoutA));
-        }
-        if (!workoutB.isEmpty()) {
-            plan.addDay(new DayOfTraining(DayOfWeek.WEDNESDAY, workoutB));
+            plan.addWeek(weekPlan); // Add the week to the plan
         }
 
         return plan;

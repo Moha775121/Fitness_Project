@@ -4,9 +4,12 @@ import java.util.logging.Level;
 
 import nl.vu.cs.softwaredesign.domain.core.UserProfile;
 import nl.vu.cs.softwaredesign.domain.plan.TrainingPlan;
+import nl.vu.cs.softwaredesign.domain.tracking.RecoveryPlan;
+import nl.vu.cs.softwaredesign.domain.tracking.WeightForecastResult;
 import nl.vu.cs.softwaredesign.planning.PlanGenerator;
 import nl.vu.cs.softwaredesign.repository.ExerciseRepository;
 import nl.vu.cs.softwaredesign.repository.JsonExerciseRepository;
+import nl.vu.cs.softwaredesign.services.analytics.WeightPredictor;
 import nl.vu.cs.softwaredesign.services.filter.EquipmentFilterService;
 import nl.vu.cs.softwaredesign.ui.UserProfileCLI;
 import nl.vu.cs.softwaredesign.services.export.PdfExporter;
@@ -27,26 +30,33 @@ public class Main {
         EquipmentFilterService filterService = new EquipmentFilterService();
         PlanGenerator generator = new PlanGenerator(filterService);
 
-        System.out.println("Generating plan...");
+        LOGGER.log(Level.INFO, "Generating plan...");
         TrainingPlan plan = generator.generate(user, repo.getAll());
-        System.out.println("Plan generated successfully!");
+        LOGGER.log(Level.INFO, "Plan generated successfully!");
 
         LOGGER.log(Level.INFO, "Loaded {0} exercises from the database.", repo.getAll().size());
         LOGGER.log(Level.INFO, user::toString);
         LOGGER.log(Level.INFO, "System is ready for the Planning Engine...");
 
-        System.out.println("Exporting your plan to PDF...");
+        LOGGER.log(Level.INFO, "Exporting your plan to PDF...");
 
+        WeightPredictor predictor = new WeightPredictor();
+        WeightForecastResult forecast = predictor.predict(user);
+
+        RecoveryPlan recovery = new RecoveryPlan(false, "System optimal. Ready to train.");
+
+        LOGGER.log(Level.INFO, "Exporting your plan to PDF...");
         PdfExporter exporter = new PdfExporter();
-        boolean success = exporter.export(plan, user, "MyTrainingPlan.pdf");
+
+        boolean success = exporter.export(plan, user, forecast, recovery);
 
         if (success) {
-            System.out.println("Success! Check your project folder for 'MyTrainingPlan.pdf'.");
+            LOGGER.log(Level.INFO, "Success! Check your project folder for 'MyTrainingPlan.pdf'.");
         } else {
-            System.out.println("Failed to export PDF.");
+            LOGGER.log(Level.WARNING, "Failed to export PDF.");
         }
 
-        System.out.println("=== Application Finished ===");
+        LOGGER.log(Level.INFO, "=== Application Finished ===");
 
         scanner.close();
     }

@@ -6,9 +6,33 @@
     "equipmentNeeded": ["BODYWEIGHT"]
   },
   {
+    "name": "Bodyweight Squat",
+    "difficulty": "BEGINNER",
+    "muscleGroups": ["LEGS", "CORE"],
+    "equipmentNeeded": ["BODYWEIGHT"]
+  },
+  {
     "name": "Dumbbell Bench Press",
     "difficulty": "INTERMEDIATE",
     "muscleGroups": ["CHEST", "SHOULDERS", "ARMS"],
-    "equipmentNeeded": ["DUMBBELL", "MACHINE"]
+    "equipmentNeeded": ["DUMBBELL"]
+  },
+  {
+    "name": "Dumbbell Goblet Squat",
+    "difficulty": "INTERMEDIATE",
+    "muscleGroups": ["LEGS", "CORE"],
+    "equipmentNeeded": ["DUMBBELL"]
+  },
+  {
+    "name": "Barbell Deadlift",
+    "difficulty": "ADVANCED",
+    "muscleGroups": ["BACK", "LEGS", "CORE"],
+    "equipmentNeeded": ["BARBELL"]
+  },
+  {
+    "name": "Pull Up",
+    "difficulty": "INTERMEDIATE",
+    "muscleGroups": ["BACK", "ARMS", "CORE"],
+    "equipmentNeeded": ["BODYWEIGHT"]
   }
 ]

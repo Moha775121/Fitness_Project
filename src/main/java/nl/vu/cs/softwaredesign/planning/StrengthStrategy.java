@@ -1,31 +1,34 @@
 package nl.vu.cs.softwaredesign.planning;
 
+import nl.vu.cs.softwaredesign.domain.core.Constraint;
+import nl.vu.cs.softwaredesign.domain.core.Goal;
 import nl.vu.cs.softwaredesign.domain.core.UserProfile;
 import nl.vu.cs.softwaredesign.domain.exercise.Exercise;
-import nl.vu.cs.softwaredesign.domain.plan.DayOfTraining;
-import nl.vu.cs.softwaredesign.domain.plan.DayOfWeek;
-import nl.vu.cs.softwaredesign.domain.plan.PlannedExercise;
-import nl.vu.cs.softwaredesign.domain.plan.TrainingPlan;
+import nl.vu.cs.softwaredesign.domain.plan.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StrengthStrategy implements RecommendationStrategy {
     @Override
-    public TrainingPlan generatePlan(UserProfile user, List<Exercise> availableExercises) {
+    public TrainingPlan generatePlan(UserProfile user, Goal goal, Constraint constraint, List<Exercise> exercises) {
         TrainingPlan plan = new TrainingPlan();
-        List<PlannedExercise> strengthWorkout = new ArrayList<>();
+        DayOfWeek[] allDays = DayOfWeek.values();
 
-        // Strength focus: 5 sets of 5 reps (Heavy load)
-        for (int i = 0; i < Math.min(4, availableExercises.size()); i++) {
-            Exercise ex = availableExercises.get(i);
-            strengthWorkout.add(new PlannedExercise(ex, 5, 5));
-        }
+        for (int w = 1; w <= goal.getTargetWeeks(); w++) {
+            WeekPlan weekPlan = new WeekPlan(w);
 
-        // Strength usually requires rest days between identical heavy sessions
-        if (!strengthWorkout.isEmpty()) {
-            plan.addDay(new DayOfTraining(DayOfWeek.MONDAY, strengthWorkout));
-            plan.addDay(new DayOfTraining(DayOfWeek.THURSDAY, strengthWorkout));
+            int daysToTrain = constraint.getDaysAvailablePerWeek();
+            for (int d = 0; d < daysToTrain && d < allDays.length; d++) {
+                List<PlannedExercise> dailyWorkout = new ArrayList<>();
+
+                for (int i = 0; i < Math.min(4, exercises.size()); i++) {
+                    dailyWorkout.add(new PlannedExercise(exercises.get(i), 5, 5, 120));
+                }
+
+                weekPlan.addDay(new DayOfTraining(allDays[d], dailyWorkout));
+            }
+            plan.addWeek(weekPlan);
         }
 
         return plan;

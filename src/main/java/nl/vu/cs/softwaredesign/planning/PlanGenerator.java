@@ -18,14 +18,10 @@ public class PlanGenerator {
 
     // This is the main method called from Activity Diagram 2
     public TrainingPlan generate(UserProfile user, List<Exercise> allExercises) {
-        // 1. Filter exercises based on user's equipment (Kelvin's feature)
         List<Exercise> availableExercises = filterService.filter(allExercises, user.getConstraint().getAvailableEquipment());
-
-        // 2. Select the right strategy based on the user's goal (Anna's feature)
         RecommendationStrategy strategy = selectStrategy(user.getGoal().getGoalType());
 
-        // 3. Delegate the actual math/generation to the chosen strategy
-        return strategy.generatePlan(user, availableExercises);
+        return strategy.generatePlan(user, user.getGoal(), user.getConstraint(), availableExercises);
     }
 
     // A modern Java switch statement to act as our "Factory"

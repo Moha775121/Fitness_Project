@@ -1,32 +1,34 @@
 package nl.vu.cs.softwaredesign.planning;
 
+import nl.vu.cs.softwaredesign.domain.core.Constraint;
+import nl.vu.cs.softwaredesign.domain.core.Goal;
 import nl.vu.cs.softwaredesign.domain.core.UserProfile;
 import nl.vu.cs.softwaredesign.domain.exercise.Exercise;
-import nl.vu.cs.softwaredesign.domain.plan.DayOfTraining;
-import nl.vu.cs.softwaredesign.domain.plan.DayOfWeek;
-import nl.vu.cs.softwaredesign.domain.plan.PlannedExercise;
-import nl.vu.cs.softwaredesign.domain.plan.TrainingPlan;
+import nl.vu.cs.softwaredesign.domain.plan.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EnduranceStrategy implements RecommendationStrategy {
     @Override
-    public TrainingPlan generatePlan(UserProfile user, List<Exercise> availableExercises) {
+    public TrainingPlan generatePlan(UserProfile user, Goal goal, Constraint constraint, List<Exercise> exercises) {
         TrainingPlan plan = new TrainingPlan();
-        List<PlannedExercise> enduranceWorkout = new ArrayList<>();
+        DayOfWeek[] allDays = DayOfWeek.values();
 
-        // Endurance focus: 3 sets of 20 reps (Cardio/Muscular stamina)
-        for (int i = 0; i < availableExercises.size(); i++) {
-            Exercise ex = availableExercises.get(i);
-            enduranceWorkout.add(new PlannedExercise(ex, 3, 20));
-        }
+        for (int w = 1; w <= goal.getTargetWeeks(); w++) {
+            WeekPlan weekPlan = new WeekPlan(w);
 
-        // Endurance can usually be trained more frequently
-        if (!enduranceWorkout.isEmpty()) {
-            plan.addDay(new DayOfTraining(DayOfWeek.MONDAY, enduranceWorkout));
-            plan.addDay(new DayOfTraining(DayOfWeek.WEDNESDAY, enduranceWorkout));
-            plan.addDay(new DayOfTraining(DayOfWeek.FRIDAY, enduranceWorkout));
+            int daysToTrain = constraint.getDaysAvailablePerWeek();
+            for (int d = 0; d < daysToTrain && d < allDays.length; d++) {
+                List<PlannedExercise> dailyWorkout = new ArrayList<>();
+
+                for (int i = 0; i < exercises.size(); i++) {
+                    dailyWorkout.add(new PlannedExercise(exercises.get(i), 3, 20, 30));
+                }
+
+                weekPlan.addDay(new DayOfTraining(allDays[d], dailyWorkout));
+            }
+            plan.addWeek(weekPlan);
         }
 
         return plan;

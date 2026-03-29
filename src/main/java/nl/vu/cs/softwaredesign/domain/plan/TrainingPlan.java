@@ -7,19 +7,19 @@ import java.util.List;
 public class TrainingPlan {
     private final LocalDate startDate;
     private final int totalWeeks;
-    private final List<DayOfTraining> days;
-
-    public List<DayOfTraining> getDays() {
-        return days;
-    }
-
-    public void addDay(DayOfTraining day) {
-        this.days.add(day);
-    }
+    private final List<WeekPlan> weekPlans;
 
     public TrainingPlan() {
         this.startDate = LocalDate.now();
         this.totalWeeks = 4;
-        this.days = new ArrayList<>();
+        this.weekPlans = new ArrayList<>();
+    }
+
+    public LocalDate getStartDate() { return startDate; }
+    public int getTotalWeeks() { return totalWeeks; }
+    public List<WeekPlan> getWeekPlans() { return weekPlans; }
+
+    public void addWeek(WeekPlan weekPlan) {
+        this.weekPlans.add(weekPlan);
     }
 }

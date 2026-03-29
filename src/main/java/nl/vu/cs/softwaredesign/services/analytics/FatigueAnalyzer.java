@@ -1,27 +1,26 @@
 package nl.vu.cs.softwaredesign.services.analytics;
 
+import nl.vu.cs.softwaredesign.domain.tracking.RecoveryPlan;
 import nl.vu.cs.softwaredesign.domain.tracking.WorkoutLog;
 
 public class FatigueAnalyzer {
 
-    // Computes a fatigue score based on the user's log
-    public int calculateFatigueScore(WorkoutLog log) {
-        int score = log.getFatigueLevel();
+    public int calculateRecovery(int baseScore, WorkoutLog log) {
+        int finalScore = baseScore + log.getFatigueLevel();
 
-        // Add penalties for bad sleep or high life stress
-        if (log.getSleepHours() < 6) {
-            score += 3;
+        if (log.getSleepHours() < 6.0) {
+            finalScore += 3;
         }
         if (log.getStressLevel() > 7) {
-            score += 2;
+            finalScore += 2;
         }
-
-        return score;
+        return finalScore;
     }
 
-    // Determines if the system needs to step in and adjust workloads
-    public boolean requiresRecoveryPlan(int fatigueScore) {
-        // If the score hits 8 or higher, trigger recovery mode
-        return fatigueScore >= 8;
+    public RecoveryPlan createRecoveryPlan(int score) {
+        if (score >= 8) {
+            return new RecoveryPlan(true, "High fatigue detected. We recommend taking 2 extra rest days and focusing on sleep.");
+        }
+        return new RecoveryPlan(false, "System optimal. Ready to train.");
     }
 }

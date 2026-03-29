@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Push Up",
+    "difficulty": "BEGINNER",
+    "muscleGroups": ["CHEST", "SHOULDERS", "ARMS", "CORE"],
+    "type": "WEIGHT_LOSS",
+    "equipmentNeeded": ["BODYWEIGHT"]
+  },
+  {
+    "name": "Bodyweight Squat",
+    "difficulty": "BEGINNER",
+    "muscleGroups": ["LEGS", "CORE"],
+    "type": "STRENGTH",
+    "equipmentNeeded": ["BODYWEIGHT"]
+  },
+  {
+    "name": "Dumbbell Bench Press",
+    "difficulty": "INTERMEDIATE",
+    "muscleGroups": ["CHEST", "SHOULDERS", "ARMS"],
+    "type": "STRENGTH",
+    "equipmentNeeded": ["DUMBBELL"]
+  },
+  {
+    "name": "Dumbbell Goblet Squat",
+    "difficulty": "INTERMEDIATE",
+    "muscleGroups": ["LEGS", "CORE"],
+    "type": "ENDURANCE",
+    "equipmentNeeded": ["DUMBBELL"]
+  },
+  {
+    "name": "Barbell Deadlift",
+    "difficulty": "ADVANCED",
+    "muscleGroups": ["BACK", "LEGS", "CORE"],
+    "type": "STRENGTH",
+    "equipmentNeeded": ["BARBELL"]
+  },
+  {
+    "name": "Pull Up",
+    "difficulty": "INTERMEDIATE",
+    "muscleGroups": ["BACK", "ARMS", "CORE"],
+    "type": "ENDURANCE",
+    "equipmentNeeded": ["BODYWEIGHT"]
+  }
+]

@@ -13,4 +13,12 @@ public class Constraint {
         this.timePerSessionMin = timePerSessionMin;
         this.availableEquipment = availableEquipment;
     }
+
+    public int getDaysAvailablePerWeek() {
+        return daysAvailablePerWeek;
+    }
+
+    public List<Equipment> getAvailableEquipment() {
+        return availableEquipment;
+    }
 }

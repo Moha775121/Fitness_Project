@@ -11,7 +11,9 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
 
-// A repository implementation that reads exercises from a JSON file. This class uses the Gson library to parse the JSON data and convert it into a list of Exercise objects. The file path to the JSON file is provided through the constructor, allowing for flexibility in where the exercise data is stored.
+// A repository implementation that reads exercises from a JSON file.
+// This class uses the Gson library to parse the JSON data and convert it into a list of Exercise objects.
+// The file path to the JSON file is provided through the constructor, allowing for flexibility in where the exercise data is stored.
 public class JsonExerciseRepository implements ExerciseRepository {
     private final String filePath;
 

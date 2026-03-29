@@ -9,6 +9,22 @@ public class UserProfile {
     private Goal goal;
     private Constraint constraint;
 
+    public Sex getSex() {
+        return sex;
+    }
+
+    public int getAvgCaloriesPerDay() {
+        return avgCaloriesPerDay;
+    }
+
+    public int getAvgStepsPerDay() {
+        return avgStepsPerDay;
+    }
+
+    public int getTrainingFrequencyPerWeek() {
+        return trainingFrequencyPerWeek;
+    }
+
     public Goal getGoal() {
         return goal;
     }

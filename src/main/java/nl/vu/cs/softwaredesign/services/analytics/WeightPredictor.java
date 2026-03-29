@@ -2,6 +2,7 @@ package nl.vu.cs.softwaredesign.services.analytics;
 
 import nl.vu.cs.softwaredesign.domain.core.UserProfile;
 import nl.vu.cs.softwaredesign.domain.tracking.WeightForecastResult;
+import nl.vu.cs.softwaredesign.domain.core.Sex;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +20,9 @@ public class WeightPredictor {
             double bmr = currentWeight * 24.0;
 
             // THE UPGRADE: Adjust BMR based on biological sex
-            if (user.getSex() == nl.vu.cs.softwaredesign.domain.core.Sex.FEMALE) {
+            if (user.getSex() == Sex.FEMALE) {
                 bmr *= 0.9;
-            } else if (user.getSex() == nl.vu.cs.softwaredesign.domain.core.Sex.MALE) {
+            } else if (user.getSex() == Sex.MALE) {
                 bmr *= 1.1;
             }
 

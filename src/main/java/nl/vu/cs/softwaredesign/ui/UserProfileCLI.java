@@ -33,7 +33,11 @@ public class UserProfileCLI {
         System.out.print("Enter your goal (WEIGHT_LOSS, STRENGTH, or ENDURANCE): ");
         GoalType goalType = GoalType.valueOf(scanner.nextLine().toUpperCase());
 
-        Goal goal = new Goal(12, 75.0, goalType);
+        System.out.print("Enter target weeks for goal: ");
+        int targetWeeks = Integer.parseInt(scanner.nextLine());
+        System.out.print("Enter target weight (kg): ");
+        double targetWeight = Double.parseDouble(scanner.nextLine());
+        Goal goal = new Goal(targetWeeks, targetWeight, goalType);
 
         Constraint constraint = new Constraint(days, 60, List.of(Equipment.BODYWEIGHT, Equipment.DUMBBELL));
 

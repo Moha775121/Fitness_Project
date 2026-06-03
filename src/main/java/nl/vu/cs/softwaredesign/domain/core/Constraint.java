@@ -14,6 +14,10 @@ public class Constraint {
         this.availableEquipment = availableEquipment;
     }
 
+    public void reduceTrainingDays() {
+        if (this.daysAvailablePerWeek > 1) this.daysAvailablePerWeek--;
+    }
+
     public int getDaysAvailablePerWeek() {
         return daysAvailablePerWeek;
     }

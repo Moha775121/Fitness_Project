@@ -6,9 +6,11 @@ import nl.vu.cs.softwaredesign.domain.core.UserProfile;
 import nl.vu.cs.softwaredesign.domain.plan.TrainingPlan;
 import nl.vu.cs.softwaredesign.domain.tracking.RecoveryPlan;
 import nl.vu.cs.softwaredesign.domain.tracking.WeightForecastResult;
+import nl.vu.cs.softwaredesign.domain.tracking.WorkoutLog;
 import nl.vu.cs.softwaredesign.planning.PlanGenerator;
 import nl.vu.cs.softwaredesign.repository.ExerciseRepository;
 import nl.vu.cs.softwaredesign.repository.JsonExerciseRepository;
+import nl.vu.cs.softwaredesign.services.analytics.FatigueAnalyzer;
 import nl.vu.cs.softwaredesign.services.analytics.WeightPredictor;
 import nl.vu.cs.softwaredesign.services.filter.EquipmentFilterService;
 import nl.vu.cs.softwaredesign.ui.UserProfileCLI;
@@ -57,6 +59,18 @@ public class Main {
         }
 
         LOGGER.log(Level.INFO, "=== Application Finished ===");
+
+        LOGGER.log(Level.INFO, "Simulating Week 1 completion and high fatigue...");
+        WorkoutLog log = new WorkoutLog(java.time.LocalDate.now(), 8, 5.0, 8);
+        FatigueAnalyzer analyzer = new FatigueAnalyzer();
+        RecoveryPlan newRecovery = analyzer.createRecoveryPlan(analyzer.calculateRecovery(0, log));
+
+        if (newRecovery.isNeedsRecovery()) {
+            user.getConstraint().reduceTrainingDays();
+            TrainingPlan adaptedPlan = generator.generate(user, repo.getAll());
+            exporter.export(adaptedPlan, user, forecast, newRecovery);
+            LOGGER.log(Level.INFO, "Adapted plan generated and re-exported due to high fatigue.");
+        }
 
         scanner.close();
     }

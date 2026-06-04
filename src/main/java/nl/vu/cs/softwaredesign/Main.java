@@ -58,18 +58,29 @@ public class Main {
             LOGGER.log(Level.WARNING, "Failed to export PDF.");
         }
 
-        LOGGER.log(Level.INFO, "=== Application Finished ===");
+        LOGGER.log(Level.INFO, "=== Initial Planning Finished ===");
 
-        LOGGER.log(Level.INFO, "Simulating Week 1 completion and high fatigue...");
-        WorkoutLog log = new WorkoutLog(java.time.LocalDate.now(), 8, 5.0, 8);
+        System.out.println("\n--- END OF WEEK 1 ---");
+        System.out.println("Let's log your week to adapt your next plan.");
+        System.out.print("Enter your fatigue level (1-10): ");
+        int userFatigue = scanner.nextInt();
+        System.out.print("Enter average sleep hours: ");
+        double userSleep = scanner.nextDouble();
+        System.out.print("Enter stress level (1-10): ");
+        int userStress = scanner.nextInt();
+
+        WorkoutLog log = new WorkoutLog(java.time.LocalDate.now(), userFatigue, userSleep, userStress);
         FatigueAnalyzer analyzer = new FatigueAnalyzer();
         RecoveryPlan newRecovery = analyzer.createRecoveryPlan(analyzer.calculateRecovery(0, log));
 
         if (newRecovery.getNeedsRecovery()) {
+            LOGGER.log(Level.WARNING, "System adapting to user state: " + newRecovery.getRecommendation());
             user.getConstraint().reduceTrainingDays();
             TrainingPlan adaptedPlan = generator.generate(user, repo.getAll());
             exporter.export(adaptedPlan, user, forecast, newRecovery);
             LOGGER.log(Level.INFO, "Adapted plan generated and re-exported due to high fatigue.");
+        } else {
+            LOGGER.log(Level.INFO, "Great job! " + newRecovery.getRecommendation());
         }
 
         scanner.close();

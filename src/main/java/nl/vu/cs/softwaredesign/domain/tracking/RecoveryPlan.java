@@ -9,6 +9,6 @@ public class RecoveryPlan {
         this.recommendation = recommendation;
     }
 
-    public boolean isNeedsRecovery() { return needsRecovery; }
+    public boolean getNeedsRecovery() { return needsRecovery; }
     public String getRecommendation() { return recommendation; }
 }

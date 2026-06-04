@@ -65,7 +65,7 @@ public class Main {
         FatigueAnalyzer analyzer = new FatigueAnalyzer();
         RecoveryPlan newRecovery = analyzer.createRecoveryPlan(analyzer.calculateRecovery(0, log));
 
-        if (newRecovery.isNeedsRecovery()) {
+        if (newRecovery.getNeedsRecovery()) {
             user.getConstraint().reduceTrainingDays();
             TrainingPlan adaptedPlan = generator.generate(user, repo.getAll());
             exporter.export(adaptedPlan, user, forecast, newRecovery);

@@ -37,7 +37,7 @@ public class Main {
         PlanGenerator generator = new PlanGenerator(filterService);
 
         LOGGER.log(Level.INFO, "Generating plan...");
-        TrainingPlan plan = generator.generate(user, repo.getAll());
+        TrainingPlan plan = generator.generate(user);
         LOGGER.log(Level.INFO, "Plan generated successfully!");
 
         LOGGER.log(Level.INFO, "Loaded {0} exercises from the database.", repo.getAll().size());
@@ -82,7 +82,7 @@ public class Main {
         if (newRecovery.getNeedsRecovery()) {
             LOGGER.log(Level.WARNING, "System adapting to user state: " + newRecovery.getRecommendation());
             user.getConstraint().reduceTrainingDays();
-            TrainingPlan adaptedPlan = generator.generate(user, repo.getAll());
+            TrainingPlan adaptedPlan = generator.generate(user);
             exporter.export(adaptedPlan, user, forecast, newRecovery);
             LOGGER.log(Level.INFO, "Adapted plan generated and re-exported due to high fatigue.");
         } else {
